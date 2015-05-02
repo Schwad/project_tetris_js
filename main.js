@@ -1,5 +1,5 @@
 "use strict";
-
+// generate new block when fused
 // have it stop if it hits another block ("fuse")
 // have it respond to player moves left and right
 // have it respond to down arrow
@@ -9,9 +9,7 @@ var model = {
   board: {
     gridSize: { height: 20, width: 10 },
     looseBlocks: [],
-    aboutToFuseBlocks: [],
     fusedBlocks: [],
-    fuseThisTurn: false
   },
 
   generateNewBlock: function(){
@@ -20,6 +18,7 @@ var model = {
       y: 21
     };
     model.board.looseBlocks.push(block);
+    model.needsNewBlock = false;
   },
 
   dropLooseBlocks: function(){
@@ -31,15 +30,18 @@ var model = {
       }
     });
     if(fuseLooseBlocks){
-      model.queueToFuse();
+      model.fuse();
     };
   },
 
-  queueToFuse: function(){
+  fuse: function(){
     for(var i = 0; i < model.board.looseBlocks.length; i++){
-        model.board.aboutToFuseBlocks.push(model.board.looseBlocks.pop());
-      }
-  }
+        model.board.fusedBlocks.push(model.board.looseBlocks.pop());
+      };
+    model.needsNewBlock = true;
+  },
+
+  needsNewBlock: true
 };
 
 var view = {
@@ -92,11 +94,13 @@ var view = {
 var controller = {
   init: function(){
     view.init(model.board);
-    model.generateNewBlock();
     setInterval(function(){
+      if(model.needsNewBlock){
+        model.generateNewBlock();
+      };
       view.wipeLooseBlocks(model.board.looseBlocks);
       model.dropLooseBlocks();
-      view.renderBlocks(model.board.aboutToFuseBlocks);
+      view.renderBlocks(model.board.fusedBlocks);
       view.renderBlocks(model.board.looseBlocks);
     }, 500);
   }
