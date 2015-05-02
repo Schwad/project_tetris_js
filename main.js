@@ -1,7 +1,5 @@
 "use strict";
 
-// have it stop at the bottom row
-    //
 // have it stop if it hits another block ("fuse")
 // have it respond to player moves left and right
 // have it respond to down arrow
@@ -25,14 +23,14 @@ var model = {
   },
 
   dropLooseBlocks: function(){
-    // var fuseLooseBlocks = false;
+    var fuseLooseBlocks = false;
     model.board.looseBlocks.forEach( function(block){
       block.y--;
       if(block.y === 1){
-        model.fuseThisTurn = true;
+        fuseLooseBlocks = true;
       }
     });
-    if(model.fuseThisTurn){
+    if(fuseLooseBlocks){
       model.queueToFuse();
     };
   },
