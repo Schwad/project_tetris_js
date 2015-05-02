@@ -1,5 +1,5 @@
 "use strict";
-// generate new block when fused
+
 // have it stop if it hits another block ("fuse")
 // have it respond to player moves left and right
 // have it respond to down arrow
