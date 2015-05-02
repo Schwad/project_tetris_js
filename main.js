@@ -1,6 +1,8 @@
 "use strict";
 // have it respond to down arrow
 
+//make model.forceDown work
+
 var model = {
 
   board: {
@@ -98,6 +100,12 @@ var model = {
       }
     });
     return leftEdge;
+  },
+
+  forceDown: function(){
+    while(!model.hasBlockBelow()){
+      model.dropLooseBlocks();
+    }
   }
 };
 
@@ -141,6 +149,8 @@ var view = {
         controller.lateralMove("left");
       } else if(e.which === 39){
         controller.lateralMove("right");
+      } else if(e.which ===  40){
+        controller.forceDown();
       }
     });
   },
@@ -182,6 +192,12 @@ var controller = {
   lateralMove: function(direction){
     view.wipeLooseBlocks(model.board.looseBlocks);
     model.lateralMove(direction);
+    view.renderBlocks(model.board.looseBlocks);
+  },
+
+  forceDown: function(){
+    view.wipeLooseBlocks(model.board.looseBlocks);
+    model.forceDown();
     view.renderBlocks(model.board.looseBlocks);
   }
 };
