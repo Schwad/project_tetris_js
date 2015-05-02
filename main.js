@@ -70,7 +70,19 @@ var model = {
     model.needsNewBlock = true;
   },
 
-  needsNewBlock: true
+  needsNewBlock: true,
+
+  lateralMove: function(direction){
+    if(direction === "left"){
+      model.board.looseBlocks.forEach( function(block){
+        block.x--;
+      });
+    } else if (direction === "right"){
+      model.board.looseBlocks.forEach( function(block){
+        block.x++;
+      });
+    }
+  }
 };
 
 var view = {
@@ -110,8 +122,10 @@ var view = {
   attachArrowListener: function(){
     $( window ).keydown(function(e){
       if(e.which === 37){
+        console.log("left");
         controller.lateralMove("left");
       } else if(e.which === 39){
+        console.log("right");
         controller.lateralMove("right");
       }
     });
