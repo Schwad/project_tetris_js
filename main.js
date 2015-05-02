@@ -1,6 +1,5 @@
 "use strict";
 
-// have it stop if it hits another block ("fuse")
 // have it respond to player moves left and right
 // have it respond to down arrow
 
@@ -9,7 +8,18 @@ var model = {
   board: {
     gridSize: { height: 20, width: 10 },
     looseBlocks: [],
-    fusedBlocks: [],
+    fusedBlocks: {
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+      5: [],
+      6: [],
+      7: [],
+      8: [],
+      9: [],
+      10: []
+    },
   },
 
   generateNewBlock: function(){
@@ -25,7 +35,7 @@ var model = {
     var fuseLooseBlocks = false;
     model.board.looseBlocks.forEach( function(block){
       block.y--;
-      if(block.y === 1){
+      if(model.crash(block)){
         fuseLooseBlocks = true;
       }
     });
@@ -34,10 +44,27 @@ var model = {
     };
   },
 
+  crash: function(block){
+    return (block.y === 1 || model.hasBlockBelow(block));
+  },
+
+  hasBlockBelow: function(block){
+    var column = block.x;
+    var hasBelow = false;
+    model.board.fusedBlocks[column].forEach(function(fusedBlock){
+      if(fusedBlock.y === block.y - 1){
+        hasBelow = true;
+      }
+    })
+    return hasBelow
+  },
+
   fuse: function(){
     for(var i = 0; i < model.board.looseBlocks.length; i++){
-        model.board.fusedBlocks.push(model.board.looseBlocks.pop());
-      };
+      var movingBlock = model.board.looseBlocks.pop();
+      var column = movingBlock.x;
+      model.board.fusedBlocks[column].push(movingBlock);
+    };
     model.needsNewBlock = true;
   },
 
@@ -83,6 +110,12 @@ var view = {
     });
   },
 
+  renderFusedBlocks: function(fusedBlocks){
+    for(var i = 1; i <= 10; i++){
+      this.renderBlocks(fusedBlocks[i]);
+    }
+  },
+
   wipeLooseBlocks: function(looseBlocks){
     looseBlocks.forEach (function(block){
       $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").removeClass( 'block' );
@@ -97,12 +130,12 @@ var controller = {
     setInterval(function(){
       if(model.needsNewBlock){
         model.generateNewBlock();
-      };
+      }
       view.wipeLooseBlocks(model.board.looseBlocks);
       model.dropLooseBlocks();
-      view.renderBlocks(model.board.fusedBlocks);
+      view.renderFusedBlocks(model.board.fusedBlocks);
       view.renderBlocks(model.board.looseBlocks);
-    }, 500);
+    }, 200);
   }
 };
 
