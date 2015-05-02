@@ -1,6 +1,7 @@
 "use strict";
 
 // have it stop at the bottom row
+    //
 // have it stop if it hits another block ("fuse")
 // have it respond to player moves left and right
 // have it respond to down arrow
