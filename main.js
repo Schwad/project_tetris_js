@@ -1,8 +1,4 @@
 "use strict";
-
-// have it respond to player moves left and right
-
-// add lateralMove function to model
 // have it respond to down arrow
 
 var model = {
@@ -73,15 +69,35 @@ var model = {
   needsNewBlock: true,
 
   lateralMove: function(direction){
-    if(direction === "left"){
+    if(direction === "left" && !model.atLeftEdge()){
       model.board.looseBlocks.forEach( function(block){
         block.x--;
       });
-    } else if (direction === "right"){
+    } else if (direction === "right" && !model.atRightEdge()){
       model.board.looseBlocks.forEach( function(block){
         block.x++;
       });
     }
+  },
+
+  atRightEdge: function(){
+    var rightEdge = false;
+    model.board.looseBlocks.forEach( function(block){
+      if(block.x === 10){
+        rightEdge = true;
+      }
+    });
+    return rightEdge;
+  },
+
+  atLeftEdge: function(){
+    var leftEdge = false;
+    model.board.looseBlocks.forEach( function(block){
+      if(block.x === 1){
+        leftEdge = true;
+      }
+    });
+    return leftEdge;
   }
 };
 
@@ -122,10 +138,8 @@ var view = {
   attachArrowListener: function(){
     $( window ).keydown(function(e){
       if(e.which === 37){
-        console.log("left");
         controller.lateralMove("left");
       } else if(e.which === 39){
-        console.log("right");
         controller.lateralMove("right");
       }
     });
