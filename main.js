@@ -31,17 +31,28 @@ var model = {
     model.needsNewBlock = false;
   },
 
-  dropLooseBlocks: function(){
-    var fuseLooseBlocks = false;
-    model.board.looseBlocks.forEach( function(block){
-      block.y--;
-      if(model.crash(block)){
-        fuseLooseBlocks = true;
-      }
-    });
+  iterateBlocks: function(){
+    model.dropLooseBlocks();
+    var fuseLooseBlocks = model.haveLooseBlocksCrashed();
     if(fuseLooseBlocks){
       model.fuse();
     }
+  },
+
+  dropLooseBlocks: function(){
+    model.board.looseBlocks.forEach( function(block){
+      block.y--;
+    });
+  },
+
+  haveLooseBlocksCrashed: function(){
+    var haveCrashed = false;
+    model.board.looseBlocks.forEach( function(block){
+      if(model.crash(block)){
+        haveCrashed = true;
+      }
+    });
+    return haveCrashed;
   },
 
   crash: function(block){
@@ -56,7 +67,7 @@ var model = {
         hasBelow = true;
       }
     })
-    return hasBelow
+    return hasBelow;
   },
 
   fuse: function(){
@@ -103,9 +114,10 @@ var model = {
   },
 
   forceDown: function(){
-    while(!model.hasBlockBelow()){
+    while(!model.haveLooseBlocksCrashed()){
       model.dropLooseBlocks();
     }
+    model.fuse();
   }
 };
 
@@ -183,7 +195,7 @@ var controller = {
         model.generateNewBlock();
       }
       view.wipeLooseBlocks(model.board.looseBlocks);
-      model.dropLooseBlocks();
+      model.iterateBlocks();
       view.renderFusedBlocks(model.board.fusedBlocks);
       view.renderBlocks(model.board.looseBlocks);
     }, 200);
