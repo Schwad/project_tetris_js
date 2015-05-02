@@ -1,6 +1,8 @@
 "use strict";
 
 // have it respond to player moves left and right
+
+// add lateralMove function to model
 // have it respond to down arrow
 
 var model = {
@@ -41,7 +43,7 @@ var model = {
     });
     if(fuseLooseBlocks){
       model.fuse();
-    };
+    }
   },
 
   crash: function(block){
@@ -64,7 +66,7 @@ var model = {
       var movingBlock = model.board.looseBlocks.pop();
       var column = movingBlock.x;
       model.board.fusedBlocks[column].push(movingBlock);
-    };
+    }
     model.needsNewBlock = true;
   },
 
@@ -75,6 +77,7 @@ var view = {
   //listeners
   init: function(board){
     this.renderBoard(board);
+    this.attachArrowListener();
   },
 
   renderBoard: function(board){
@@ -102,6 +105,16 @@ var view = {
       });
       row.append($cell);
     }
+  },
+
+  attachArrowListener: function(){
+    $( window ).keydown(function(e){
+      if(e.which === 37){
+        controller.lateralMove("left");
+      } else if(e.which === 39){
+        controller.lateralMove("right");
+      }
+    });
   },
 
   renderBlocks: function(blocks){
@@ -136,6 +149,12 @@ var controller = {
       view.renderFusedBlocks(model.board.fusedBlocks);
       view.renderBlocks(model.board.looseBlocks);
     }, 200);
+  },
+
+  lateralMove: function(direction){
+    view.wipeLooseBlocks(model.board.looseBlocks);
+    model.lateralMove(direction);
+    view.renderBlocks(model.board.looseBlocks);
   }
 };
 
