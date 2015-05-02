@@ -1,6 +1,5 @@
 "use strict";
 
-// non-interactive single block falling
 // have it stop at the bottom row
 // have it stop if it hits another block ("fuse")
 // have it respond to player moves left and right
@@ -9,20 +8,34 @@
 var model = {
 
   board: {
+    gridSize: { height: 20, width: 10 },
     looseBlocks: [],
     fusedBlocks: []
+  },
+
+  generateNewBlock: function(){
+    var block = {
+      x: 5,
+      y: 21
+    }
+    model.board.looseBlocks.push(block);
+  },
+
+  dropLooseBlocks: function(){
+    model.board.looseBlocks.forEach( function(block){
+      block.y--;
+    });
   }
 };
 
 var view = {
   //listeners
-  init: function(){
-    this.renderBoard();
+  init: function(board){
+    this.renderBoard(board);
   },
 
-  renderBoard: function(){
-    var gridSize = { height: 20, width: 10 };
-    this.appendRowsToContainer(gridSize);
+  renderBoard: function(board){
+    this.appendRowsToContainer(board.gridSize);
   },
 
   appendRowsToContainer: function(gridSize){
@@ -46,13 +59,33 @@ var view = {
       });
       row.append($cell);
     }
+  },
+
+  // $("div[data-y='" + snakeHead.y + "'] div[data-x='" + snakeHead.x + "']").addClass( 'snake-head' );
+
+  renderLooseBlocks: function(looseBlocks){
+    looseBlocks.forEach (function(block){
+      $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").addClass( 'block' );
+    });
+  },
+
+  wipeLooseBlocks: function(looseBlocks){
+    looseBlocks.forEach (function(block){
+      $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").removeClass( 'block' );
+    });
   }
 };
 
 var controller = {
   init: function(){
-    view.init();
-    // Gameloop
+    view.init(model.board);
+    model.generateNewBlock();
+    // set interval to drop block
+    setInterval(function(){
+      view.wipeLooseBlocks(model.board.looseBlocks);
+      model.dropLooseBlocks();
+      view.renderLooseBlocks(model.board.looseBlocks);
+    }, 500);
   }
 };
 
