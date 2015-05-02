@@ -11,21 +11,36 @@ var model = {
   board: {
     gridSize: { height: 20, width: 10 },
     looseBlocks: [],
-    fusedBlocks: []
+    aboutToFuseBlocks: [],
+    fusedBlocks: [],
+    fuseThisTurn: false
   },
 
   generateNewBlock: function(){
     var block = {
       x: 5,
       y: 21
-    }
+    };
     model.board.looseBlocks.push(block);
   },
 
   dropLooseBlocks: function(){
+    // var fuseLooseBlocks = false;
     model.board.looseBlocks.forEach( function(block){
       block.y--;
+      if(block.y === 1){
+        model.fuseThisTurn = true;
+      }
     });
+    if(model.fuseThisTurn){
+      model.queueToFuse();
+    };
+  },
+
+  queueToFuse: function(){
+    for(var i = 0; i < model.board.looseBlocks.length; i++){
+        model.board.aboutToFuseBlocks.push(model.board.looseBlocks.pop());
+      }
   }
 };
 
@@ -62,10 +77,8 @@ var view = {
     }
   },
 
-  // $("div[data-y='" + snakeHead.y + "'] div[data-x='" + snakeHead.x + "']").addClass( 'snake-head' );
-
-  renderLooseBlocks: function(looseBlocks){
-    looseBlocks.forEach (function(block){
+  renderBlocks: function(blocks){
+    blocks.forEach (function(block){
       $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").addClass( 'block' );
     });
   },
@@ -74,18 +87,19 @@ var view = {
     looseBlocks.forEach (function(block){
       $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").removeClass( 'block' );
     });
-  }
+  },
+
 };
 
 var controller = {
   init: function(){
     view.init(model.board);
     model.generateNewBlock();
-    // set interval to drop block
     setInterval(function(){
       view.wipeLooseBlocks(model.board.looseBlocks);
       model.dropLooseBlocks();
-      view.renderLooseBlocks(model.board.looseBlocks);
+      view.renderBlocks(model.board.aboutToFuseBlocks);
+      view.renderBlocks(model.board.looseBlocks);
     }, 500);
   }
 };
