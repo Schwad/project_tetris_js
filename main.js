@@ -229,16 +229,21 @@ var view = {
 
   renderFusedBlocks: function(fusedBlocks){
     for(var i = 1; i <= 10; i++){
-      this.renderBlocks(fusedBlocks[i]);
+      view.renderBlocks(fusedBlocks[i]);
     }
   },
 
-  wipeLooseBlocks: function(looseBlocks){
-    looseBlocks.forEach (function(block){
+  wipeBlocks: function(blocks){
+    blocks.forEach (function(block){
       $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").removeClass( 'block' );
     });
   },
 
+  wipeFusedBlocks: function(fusedBlocks){
+    for(var i = 1; i <= 10; i++){
+      view.wipeBlocks(fusedBlocks[i]);
+    }
+  }
 };
 
 var controller = {
@@ -247,9 +252,11 @@ var controller = {
     setInterval(function(){
       if(model.newPiece){
         model.cleanUpRows();
+        view.wipeFusedBlocks(model.board.fusedBlocks);
+        // view.renderFusedBlocks(model.board.fusedBlocks);
         model.generateNewBlock();
       }
-      view.wipeLooseBlocks(model.board.looseBlocks);
+      view.wipeBlocks(model.board.looseBlocks);
       model.iterateBlocks();
       view.renderFusedBlocks(model.board.fusedBlocks);
       view.renderBlocks(model.board.looseBlocks);
@@ -257,13 +264,13 @@ var controller = {
   },
 
   lateralMove: function(direction){
-    view.wipeLooseBlocks(model.board.looseBlocks);
+    view.wipeBlocks(model.board.looseBlocks);
     model.lateralMove(direction);
     view.renderBlocks(model.board.looseBlocks);
   },
 
   forceDown: function(){
-    view.wipeLooseBlocks(model.board.looseBlocks);
+    view.wipeBlocks(model.board.looseBlocks);
     model.forceDown();
     view.renderBlocks(model.board.looseBlocks);
   }
