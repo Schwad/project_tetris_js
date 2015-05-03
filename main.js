@@ -1,8 +1,6 @@
 "use strict";
 
-// on fusion, check Y values to see if rows are complete
-// write function that scans rows to test and sees if they are complete.
-// console log to show that the check has happened
+
 // PART 2: clearing out the row
 
 var model = {
@@ -134,10 +132,24 @@ var model = {
   cleanUpRows: function(){
     model.rowsToTest.forEach(function(row){
       if(model.isRowComplete(row)){
+        model.destroyRowAndDropPiecesAbove(row);
         console.log("BOOM at row " + row);
       }
     });
     model.rowsToTest = [];
+  },
+
+  //WHERE WE LEFT OFF!!!!
+  destroyRowAndDropPiecesAbove: function(row){
+    for(var column = 1; column <= 10; column++){
+      model.board.fusedBlocks[column].forEach(function(block){
+        if (){
+          //CONDITIONALS FOR DESTRUCTION AND DOWNWARD ITERATION
+        } else if {
+
+        }
+      });
+    }
   },
 
   isRowComplete: function(row){
