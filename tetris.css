@@ -11,6 +11,6 @@
   float: left;
 }
 
-.block {
-  background-color: red;
+.block.square {
+  background-color: green;
 }

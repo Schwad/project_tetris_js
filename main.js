@@ -27,18 +27,19 @@ var model = {
 
   piece: {
     square: function(){
-      model.generateNewBlock(5, 21);
-      model.generateNewBlock(5, 22);
-      model.generateNewBlock(6, 21);
-      model.generateNewBlock(6, 22);
+      model.generateNewBlock(5, 21, "square");
+      model.generateNewBlock(5, 22, "square");
+      model.generateNewBlock(6, 21, "square");
+      model.generateNewBlock(6, 22, "square");
       model.newPiece = false;
     }
   },
 
-  generateNewBlock: function(x, y){
+  generateNewBlock: function(x, y, type){
     var block = {
       x: x,
-      y: y
+      y: y,
+      type: type
     };
     model.board.looseBlocks.push(block);
   },
@@ -237,7 +238,7 @@ var view = {
 
   renderBlocks: function(blocks){
     blocks.forEach (function(block){
-      $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").addClass( 'block' );
+      $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").addClass( 'block' ).addClass( block.type );
     });
   },
 
@@ -249,7 +250,7 @@ var view = {
 
   wipeBlocks: function(blocks){
     blocks.forEach(function(block){
-      $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").removeClass( 'block' );
+      $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").removeClass( 'block' ).removeClass( 'square' );
     });
   },
 
