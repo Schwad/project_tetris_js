@@ -234,15 +234,13 @@ var view = {
   },
 
   wipeBlocks: function(blocks){
-    blocks.forEach (function(block){
+    blocks.forEach(function(block){
       $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").removeClass( 'block' );
     });
   },
 
-  wipeFusedBlocks: function(fusedBlocks){
-    for(var i = 1; i <= 10; i++){
-      view.wipeBlocks(fusedBlocks[i]);
-    }
+  wipeFusedBlocks: function(){
+    $(".block").removeClass("block");
   }
 };
 
@@ -252,8 +250,8 @@ var controller = {
     setInterval(function(){
       if(model.newPiece){
         model.cleanUpRows();
-        view.wipeFusedBlocks(model.board.fusedBlocks);
-        // view.renderFusedBlocks(model.board.fusedBlocks);
+        view.wipeFusedBlocks();
+        view.renderFusedBlocks(model.board.fusedBlocks);
         model.generateNewBlock();
       }
       view.wipeBlocks(model.board.looseBlocks);
