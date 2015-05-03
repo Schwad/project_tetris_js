@@ -18,3 +18,11 @@
 .block.bar {
   background-color: yellow;
 }
+
+.block.left-l {
+  background-color: blue;
+}
+
+.block.right-l {
+  background-color: red;
+}

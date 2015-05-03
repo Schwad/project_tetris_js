@@ -39,6 +39,20 @@ var model = {
       model.generateNewBlock(5, 23, "bar");
       model.generateNewBlock(5, 24, "bar");
       model.newPiece = false;
+    },
+    rightL: function(){
+      model.generateNewBlock(5, 21, "right-l");
+      model.generateNewBlock(6, 21, "right-l");
+      model.generateNewBlock(5, 22, "right-l");
+      model.generateNewBlock(5, 23, "right-l");
+      model.newPiece = false;
+    },
+    leftL: function(){
+      model.generateNewBlock(5, 21, "left-l");
+      model.generateNewBlock(6, 21, "left-l");
+      model.generateNewBlock(6, 22, "left-l");
+      model.generateNewBlock(6, 23, "left-l");
+      model.newPiece = false;
     }
   },
 
@@ -197,11 +211,15 @@ var model = {
   },
 
   addRandomPiece: function (){
-    var selector = Math.floor(Math.random()*2)+1;
+    var selector = Math.floor(Math.random()*4)+1;
     if(selector === 1){
       model.piece.square();
     } else if (selector === 2){
       model.piece.bar();
+    } else if (selector === 3){
+      model.piece.leftL();
+    } else if (selector === 4){
+      model.piece.rightL();
     }
   }
 };
@@ -266,7 +284,7 @@ var view = {
 
   wipeBlocks: function(blocks){
     blocks.forEach(function(block){
-      $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").removeClass( 'block' ).removeClass( 'square' ).removeClass( 'bar' );
+      $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").removeClass( 'block' ).removeClass( 'square' ).removeClass( 'bar' ).removeClass( 'left-l' ).removeClass( 'right-l' );
     });
   },
 
