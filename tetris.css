@@ -26,3 +26,11 @@
 .block.right-l {
   background-color: red;
 }
+
+.block.left-s {
+  background-color: orange;
+}
+
+.block.right-s {
+  background-color: purple;
+}
