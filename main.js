@@ -20,6 +20,8 @@ var model = {
       9: [],
       10: []
     },
+
+    score: 0
   },
 
   generateNewBlock: function(){
@@ -133,7 +135,7 @@ var model = {
     model.rowsToTest.forEach(function(row){
       if(model.isRowComplete(row)){
         model.destroyRowAndDropPiecesAbove(row);
-        console.log("BOOM at row " + row);
+        model.board.score++;
       }
     });
     model.rowsToTest = [];
@@ -243,6 +245,10 @@ var view = {
 
   wipeFusedBlocks: function(){
     $(".block").removeClass("block");
+  },
+
+  renderScore: function(score){
+    $("#score").text(score);
   }
 };
 
@@ -256,6 +262,7 @@ var controller = {
         view.renderFusedBlocks(model.board.fusedBlocks);
         model.generateNewBlock();
       }
+      view.renderScore(model.board.score);
       view.wipeBlocks(model.board.looseBlocks);
       model.iterateBlocks();
       view.renderFusedBlocks(model.board.fusedBlocks);
