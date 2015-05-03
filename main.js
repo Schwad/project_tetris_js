@@ -1,7 +1,9 @@
 "use strict";
-// have it respond to down arrow
 
-//make model.forceDown work
+// on fusion, check Y values to see if rows are complete
+// write function that scans rows to test and sees if they are complete.
+// console log to show that the check has happened
+// PART 2: clearing out the row
 
 var model = {
 
@@ -71,15 +73,24 @@ var model = {
   },
 
   fuse: function(){
+    model.board.looseBlocks.forEach(function(block){
+      model.rowsToTest.push(block.y);
+    });
+    model.moveBlocksFromLooseToFused();
+    model.needsNewBlock = true;
+  },
+
+  needsNewBlock: true,
+
+  rowsToTest: [],
+
+  moveBlocksFromLooseToFused: function(){
     for(var i = 0; i < model.board.looseBlocks.length; i++){
       var movingBlock = model.board.looseBlocks.pop();
       var column = movingBlock.x;
       model.board.fusedBlocks[column].push(movingBlock);
     }
-    model.needsNewBlock = true;
   },
-
-  needsNewBlock: true,
 
   lateralMove: function(direction){
     if(direction === "left" && !model.atLeftEdge()){
