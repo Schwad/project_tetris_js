@@ -145,6 +145,8 @@ var model = {
       model.board.fusedBlocks[column].forEach(function(block, index){
         if(block.y === row){
           targetIndex = index;
+        } else if (block.y > row){
+          block.y--;
         }
       });
       if(targetIndex !== undefined){
