@@ -24,13 +24,22 @@ var model = {
     score: 0
   },
 
-  generateNewBlock: function(){
+  piece: {
+    square: function(){
+      model.generateNewBlock(5, 21);
+      model.generateNewBlock(5, 22);
+      model.generateNewBlock(6, 21);
+      model.generateNewBlock(6, 22);
+      model.newPiece = false;
+    }
+  },
+
+  generateNewBlock: function(x, y){
     var block = {
-      x: 5,
-      y: 21
+      x: x,
+      y: y
     };
     model.board.looseBlocks.push(block);
-    model.newPiece = false;
   },
 
   iterateBlocks: function(){
@@ -68,7 +77,7 @@ var model = {
       if(fusedBlock.y === block.y - 1){
         hasBelow = true;
       }
-    })
+    });
     return hasBelow;
   },
 
@@ -85,11 +94,11 @@ var model = {
   rowsToTest: [],
 
   moveBlocksFromLooseToFused: function(){
-    for(var i = 0; i < model.board.looseBlocks.length; i++){
-      var movingBlock = model.board.looseBlocks.pop();
-      var column = movingBlock.x;
-      model.board.fusedBlocks[column].push(movingBlock);
-    }
+    model.board.looseBlocks.forEach(function(block){
+      var column = block.x;
+      model.board.fusedBlocks[column].push(block);
+    });
+    model.board.looseBlocks = [];
   },
 
   lateralMove: function(direction){
@@ -260,14 +269,14 @@ var controller = {
         model.cleanUpRows();
         view.wipeFusedBlocks();
         view.renderFusedBlocks(model.board.fusedBlocks);
-        model.generateNewBlock();
+        model.piece.square();
       }
       view.renderScore(model.board.score);
       view.wipeBlocks(model.board.looseBlocks);
       model.iterateBlocks();
       view.renderFusedBlocks(model.board.fusedBlocks);
       view.renderBlocks(model.board.looseBlocks);
-    }, 200);
+    }, 600);
   },
 
   lateralMove: function(direction){
