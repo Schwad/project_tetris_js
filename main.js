@@ -30,7 +30,7 @@ var model = {
       y: 21
     };
     model.board.looseBlocks.push(block);
-    model.needsNewBlock = false;
+    model.newPiece = false;
   },
 
   iterateBlocks: function(){
@@ -77,10 +77,10 @@ var model = {
       model.rowsToTest.push(block.y);
     });
     model.moveBlocksFromLooseToFused();
-    model.needsNewBlock = true;
+    model.newPiece = true;
   },
 
-  needsNewBlock: true,
+  newPiece: true,
 
   rowsToTest: [],
 
@@ -129,6 +129,35 @@ var model = {
       model.dropLooseBlocks();
     }
     model.fuse();
+  },
+
+  cleanUpRows: function(){
+    model.rowsToTest.forEach(function(row){
+      if(model.isRowComplete(row)){
+        console.log("BOOM at row " + row);
+      }
+    });
+    model.rowsToTest = [];
+  },
+
+  isRowComplete: function(row){
+    var isComplete = true;
+    for(var column = 1; column <= 10; column ++){
+      if(!model.hasCellAtCoordinates(column, row)){
+        isComplete = false;
+      }
+    }
+    return isComplete;
+  },
+
+  hasCellAtCoordinates: function(column, row){
+    var cellAtCoordinates = false;
+    model.board.fusedBlocks[column].forEach(function(block){
+      if(block.y === row){
+        cellAtCoordinates = true;
+      }
+    });
+    return cellAtCoordinates;
   }
 };
 
@@ -202,7 +231,8 @@ var controller = {
   init: function(){
     view.init(model.board);
     setInterval(function(){
-      if(model.needsNewBlock){
+      if(model.newPiece){
+        model.cleanUpRows();
         model.generateNewBlock();
       }
       view.wipeLooseBlocks(model.board.looseBlocks);
