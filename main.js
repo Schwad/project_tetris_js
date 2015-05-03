@@ -139,16 +139,18 @@ var model = {
     model.rowsToTest = [];
   },
 
-  //WHERE WE LEFT OFF!!!!
   destroyRowAndDropPiecesAbove: function(row){
     for(var column = 1; column <= 10; column++){
-      model.board.fusedBlocks[column].forEach(function(block){
-        if (){
-          //CONDITIONALS FOR DESTRUCTION AND DOWNWARD ITERATION
-        } else if {
-
+      var targetIndex;
+      model.board.fusedBlocks[column].forEach(function(block, index){
+        if(block.y === row){
+          targetIndex = index;
         }
       });
+      if(targetIndex !== undefined){
+        model.board.fusedBlocks[column].splice(targetIndex,1);
+      }
+      targetIndex = undefined;
     }
   },
 
