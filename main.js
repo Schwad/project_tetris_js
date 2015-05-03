@@ -1,7 +1,8 @@
 "use strict";
 
-
-// PART 2: clearing out the row
+// Add color to piece type.
+// Randomly picking a piece.
+// Create rest of pieces.
 
 var model = {
 
