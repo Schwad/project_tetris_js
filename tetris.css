@@ -14,3 +14,7 @@
 .block.square {
   background-color: green;
 }
+
+.block.bar {
+  background-color: yellow;
+}

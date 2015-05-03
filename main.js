@@ -32,6 +32,13 @@ var model = {
       model.generateNewBlock(6, 21, "square");
       model.generateNewBlock(6, 22, "square");
       model.newPiece = false;
+    },
+    bar: function(){
+      model.generateNewBlock(5, 21, "bar");
+      model.generateNewBlock(5, 22, "bar");
+      model.generateNewBlock(5, 23, "bar");
+      model.generateNewBlock(5, 24, "bar");
+      model.newPiece = false;
     }
   },
 
@@ -187,6 +194,15 @@ var model = {
       }
     });
     return cellAtCoordinates;
+  },
+
+  addRandomPiece: function (){
+    var selector = Math.floor(Math.random()*2)+1;
+    if(selector === 1){
+      model.piece.square();
+    } else if (selector === 2){
+      model.piece.bar();
+    }
   }
 };
 
@@ -250,7 +266,7 @@ var view = {
 
   wipeBlocks: function(blocks){
     blocks.forEach(function(block){
-      $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").removeClass( 'block' ).removeClass( 'square' );
+      $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").removeClass( 'block' ).removeClass( 'square' ).removeClass( 'bar' );
     });
   },
 
@@ -271,7 +287,7 @@ var controller = {
         model.cleanUpRows();
         view.wipeFusedBlocks();
         view.renderFusedBlocks(model.board.fusedBlocks);
-        model.piece.square();
+        model.addRandomPiece();
       }
       view.renderScore(model.board.score);
       view.wipeBlocks(model.board.looseBlocks);
