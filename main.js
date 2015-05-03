@@ -20,6 +20,10 @@ var model = {
     score: 0
   },
 
+  raiseScore: function(points){
+    model.board.score = model.board.score + points;
+  },
+
   piece: {
     square: function(){
       model.generateNewBlock(5, 21, "square");
@@ -177,7 +181,7 @@ var model = {
     sortedRowsToTest.forEach(function(row){
       if(model.isRowComplete(row)){
         model.destroyRowAndDropPiecesAbove(row);
-        model.board.score++;
+        model.raiseScore(100);
       }
     });
     model.rowsToTest = [];
@@ -326,6 +330,7 @@ var controller = {
       model.iterateBlocks();
       view.renderFusedBlocks(model.board.fusedBlocks);
       view.renderBlocks(model.board.looseBlocks);
+      model.raiseScore(5);
     }, 600);
   },
 
