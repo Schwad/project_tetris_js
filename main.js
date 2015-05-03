@@ -1,9 +1,5 @@
 "use strict";
 
-// Add color to piece type.
-// Randomly picking a piece.
-// Create rest of pieces.
-
 var model = {
 
   board: {
@@ -21,7 +17,6 @@ var model = {
       9: [],
       10: []
     },
-
     score: 0
   },
 
@@ -178,7 +173,8 @@ var model = {
   },
 
   cleanUpRows: function(){
-    model.rowsToTest.forEach(function(row){
+    var sortedRowsToTest = model.rowsToTest.sort().reverse();
+    sortedRowsToTest.forEach(function(row){
       if(model.isRowComplete(row)){
         model.destroyRowAndDropPiecesAbove(row);
         model.board.score++;
