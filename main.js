@@ -371,7 +371,9 @@ var controller = {
   },
 
   forceDown: function(){
-    controller.wipeAndRerenderBlocksAroundFunction(model.forceDown());
+    view.wipeBlocks(model.board.looseBlocks);
+    model.forceDown();
+    view.renderBlocks(model.board.looseBlocks);
   },
 
   // rotatePiece: function(){
