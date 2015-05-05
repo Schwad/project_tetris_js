@@ -376,13 +376,9 @@ var controller = {
     view.renderBlocks(model.board.looseBlocks);
   },
 
-  // rotatePiece: function(){
-
-  // },
-
-  wipeAndRerenderBlocksAroundFunction: function(targetFunction){
+  rotatePiece: function(){
     view.wipeBlocks(model.board.looseBlocks);
-    targetFunction;
+    console.log("Rotate");
     view.renderBlocks(model.board.looseBlocks);
   }
 };
