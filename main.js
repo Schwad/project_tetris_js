@@ -73,6 +73,13 @@ var model = {
       model.generateNewBlock(6, 22, "left-s");
       model.generateNewBlock(7, 21, "left-s");
       model.newPiece = false;
+    },
+    tee: function(){
+      model.generateNewBlock(5, 21, "tee");
+      model.generateNewBlock(6, 21, "tee");
+      model.generateNewBlock(7, 21, "tee");
+      model.generateNewBlock(6, 22, "tee");
+      model.newPiece = false;
     }
   },
 
@@ -232,7 +239,7 @@ var model = {
   },
 
   addRandomPiece: function (){
-    var selector = Math.floor(Math.random()*6)+1;
+    var selector = Math.floor(Math.random()*7)+1;
     if(selector === 1){
       model.piece.square();
     } else if (selector === 2){
@@ -245,6 +252,8 @@ var model = {
       model.piece.rightS();
     } else if (selector === 6){
       model.piece.leftS();
+    } else if (selector === 7){
+      model.piece.tee();
     }
   }
 };
@@ -287,6 +296,8 @@ var view = {
     $( window ).keydown(function(e){
       if(e.which === 37){
         controller.lateralMove("left");
+      } else if(e.which === 38) {
+        controller.rotatePiece();
       } else if(e.which === 39){
         controller.lateralMove("right");
       } else if(e.which ===  40){
@@ -325,7 +336,8 @@ var view = {
       .removeClass( 'left-l' )
       .removeClass( 'right-l' )
       .removeClass( 'right-s' )
-      .removeClass( 'left-s' );
+      .removeClass( 'left-s' )
+      .removeClass( 'tee' );
   },
 
   renderScore: function(score){
@@ -359,8 +371,16 @@ var controller = {
   },
 
   forceDown: function(){
+    controller.wipeAndRerenderBlocksAroundFunction(model.forceDown());
+  },
+
+  // rotatePiece: function(){
+
+  // },
+
+  wipeAndRerenderBlocksAroundFunction: function(targetFunction){
     view.wipeBlocks(model.board.looseBlocks);
-    model.forceDown();
+    targetFunction;
     view.renderBlocks(model.board.looseBlocks);
   }
 };
