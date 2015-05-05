@@ -11,6 +11,12 @@
   float: left;
 }
 
+.block {
+  box-sizing: border-box;
+  border: 1px solid white;
+  border-radius: 5px;
+}
+
 .block.square {
   background-color: green;
 }
