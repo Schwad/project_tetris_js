@@ -1,5 +1,12 @@
 "use strict";
 
+// BUGS
+// Left/right block collisions
+
+// TODO
+// Rotate!
+// Game over
+
 var model = {
 
   board: {
@@ -302,12 +309,23 @@ var view = {
 
   wipeBlocks: function(blocks){
     blocks.forEach(function(block){
-      $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']").removeClass( 'block' ).removeClass( 'square' ).removeClass( 'bar' ).removeClass( 'left-l' ).removeClass( 'right-l' ).removeClass( 'right-s' ).removeClass( 'left-s' );
+      var $block = $("div[data-y='" + block.y + "'] div[data-x='" + block.x + "']");
+      view.wipeAllTypes($block);
     });
   },
 
   wipeFusedBlocks: function(){
-    $(".block").removeClass("block");
+    view.wipeAllTypes($(".block"));
+  },
+
+  wipeAllTypes: function(object){
+    object.removeClass( 'block' )
+      .removeClass( 'square' )
+      .removeClass( 'bar' )
+      .removeClass( 'left-l' )
+      .removeClass( 'right-l' )
+      .removeClass( 'right-s' )
+      .removeClass( 'left-s' );
   },
 
   renderScore: function(score){
